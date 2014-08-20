@@ -21,6 +21,7 @@ import com.efreight.weixin.process.HELPProcess;
 import com.efreight.weixin.process.WXProcess;
 import com.efreight.weixin.process.WXProcessHandler;
 import com.sun.xml.internal.fastinfoset.sax.Properties;
+import javax.servlet.http.HttpServletResponse;
 
 /**
  * 处理用户发送过来的文本消息，继承WXMessageHandler类
@@ -65,10 +66,11 @@ public class TEXTMessage extends WXMessageHandler {
 		}
 		String message = "";
 		String messagetype = doc.selectSingleNode("//MsgType").getText();
+		String openid= doc.selectSingleNode("//FromUserName").getText();
 		if(messagetype.equalsIgnoreCase("voice")){
 			message = doc.selectSingleNode("//Recognition").getText();
 			WXInfoDownloader util = new WXInfoDownloader();
-			String openid= doc.selectSingleNode("//FromUserName").getText();
+			
 			try {
 				util.SendWXTextMessageWithCustomAPI(openid, "您的语音信息解析为：" + message);
 			} catch (Exception e) {
